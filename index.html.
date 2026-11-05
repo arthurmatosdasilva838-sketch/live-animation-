@@ -1,0 +1,238 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LIVE ANIMATION</title>
+<style>
+*{box-sizing:border-box}
+body{
+ margin:0;background:#090711;color:white;
+ font-family:Arial,sans-serif;padding:18px;
+}
+header{text-align:center;padding:18px}
+.logo{font-size:27px;font-weight:900;color:#b36aff}
+.sub{color:#aaa;font-size:12px}
+.card{
+ background:#171326;border:1px solid #39275b;
+ border-radius:18px;padding:18px;margin:15px 0;
+}
+h2{font-size:17px}
+select,input{
+ width:100%;padding:13px;margin:7px 0;
+ border-radius:10px;border:1px solid #493568;
+ background:#0e0b18;color:white;font-size:15px;
+}
+button{
+ padding:13px;border:0;border-radius:10px;
+ background:#914cff;color:white;font-weight:bold;
+ cursor:pointer;margin:4px;
+}
+button.secondary{background:#302442}
+.avatar{
+ width:125px;height:125px;border-radius:40%;
+ background:linear-gradient(135deg,#ffe16b,#ed9b20);
+ border:4px solid #c18aff;margin:20px auto;
+ display:flex;align-items:center;justify-content:center;
+ font-size:65px;box-shadow:0 0 30px #963cff66;
+}
+.talking{animation:talk .2s infinite alternate}
+@keyframes talk{to{transform:scale(1.06)}}
+.center{text-align:center}
+#messages{max-height:260px;overflow:auto}
+.message{
+ background:#241c36;padding:12px;
+ border-radius:12px;margin:9px 0;
+}
+.name{color:#c18aff;font-weight:bold}
+.answer{color:#8df0bc;margin-top:8px}
+.status{color:#8df0bc;font-size:13px}
+.controls{display:flex;flex-wrap:wrap;justify-content:center}
+small{color:#aaa}
+</style>
+</head>
+<body>
+
+<header>
+ <div class="logo">✦ LIVE ANIMATION</div>
+ <div class="sub">YOUR AI. YOUR CHARACTER. YOUR LIVE.</div>
+</header>
+
+<div class="card center">
+ <h2>🎭 Escolha seu personagem</h2>
+ <select id="character" onchange="changeCharacter()">
+  <option value="bobi">Bobi — Esponjinha</option>
+  <option value="pink">Estrelinha rosa</option>
+  <option value="green">Herói verde</option>
+  <option value="cat">Gato cinza</option>
+  <option value="mouse">Ratinho marrom</option>
+  <option value="robot">Robô futurista</option>
+ </select>
+
+ <div class="avatar" id="avatar">🧽</div>
+ <h2 id="characterName">Bobi</h2>
+ <div class="status" id="status">● Pronto para conversar</div>
+
+ <div class="controls">
+  <button onclick="startLive()">▶ INICIAR</button>
+  <button class="secondary" onclick="stopLive()">Ⅱ PAUSAR</button>
+  <button class="secondary" onclick="testVoice()">🔊 TESTAR VOZ</button>
+ </div>
+</div>
+
+<div class="card">
+ <h2>💬 Comentários</h2>
+ <div id="messages"></div>
+
+ <input id="username" placeholder="Nome da pessoa">
+ <input id="comment" placeholder="Digite um comentário">
+
+ <button onclick="sendMessage()">ENVIAR COMENTÁRIO</button>
+</div>
+
+<div class="card">
+ <h2>⚙️ Configurações</h2>
+ <label>Velocidade da voz</label>
+ <input type="range" id="speed" min="0.7" max="1.4" step="0.1" value="1">
+ <label>Tom da voz</label>
+ <input type="range" id="pitch" min="0.7" max="1.5" step="0.1" value="1.1">
+ <small>As vozes dependem do navegador e do aparelho.</small>
+</div>
+
+<script>
+let active=false;
+let busy=false;
+
+const characters={
+ bobi:{name:"Bobi",emoji:"🧽"},
+ pink:{name:"Estrelinha rosa",emoji:"⭐"},
+ green:{name:"Herói verde",emoji:"👽"},
+ cat:{name:"Gato cinza",emoji:"🐱"},
+ mouse:{name:"Ratinho marrom",emoji:"🐭"},
+ robot:{name:"Robô futurista",emoji:"🤖"}
+};
+
+function changeCharacter(){
+ const c=characters[document.getElementById("character").value];
+ document.getElementById("avatar").textContent=c.emoji;
+ document.getElementById("characterName").textContent=c.name;
+}
+
+function response(name,msg){
+ const m=msg.toLowerCase();
+
+ if(/tudo bem|como vai|como tá|tudo bom/.test(m))
+ return `Tudo ótimo, ${name}! E você?`;
+
+ if(/idade|quantos anos/.test(m))
+ return `Eu sou um personagem virtual, ${name}! Não tenho idade de verdade!`;
+
+ if(/qual seu nome|quem é você/.test(m))
+ return `Eu sou ${characters[document.getElementById("character").value].name}! Prazer, ${name}!`;
+
+ if(/salve/.test(m))
+ return `Salve, ${name}! Obrigado por estar aqui!`;
+
+ if(/piada/.test(m))
+ return `Quer uma piada, ${name}? Por que o computador foi ao médico? Porque estava com um vírus!`;
+
+ if(/obrigado|obrigada|valeu/.test(m))
+ return `Tamo junto, ${name}!`;
+
+ if(/tchau|vou sair/.test(m))
+ return `Até mais, ${name}! Volta sempre!`;
+
+ if(/gosta de mim|te amo/.test(m))
+ return `Você é muito gente boa, ${name}! Obrigado pelo carinho!`;
+
+ if(/jogo|jogar/.test(m))
+ return `Qual jogo você gosta, ${name}?`;
+
+ return `Opa, ${name}! Não entendi direito o que você quis dizer. Pode explicar melhor? Não quero falar besteira!`;
+}
+
+function speak(text){
+ if(!("speechSynthesis" in window)){
+  alert("Seu navegador não oferece voz automática.");
+  return;
+ }
+
+ speechSynthesis.cancel();
+
+ const voice=new SpeechSynthesisUtterance(text);
+ voice.lang="pt-BR";
+ voice.rate=Number(document.getElementById("speed").value);
+ voice.pitch=Number(document.getElementById("pitch").value);
+
+ const voices=speechSynthesis.getVoices();
+ const pt=voices.find(v=>v.lang==="pt-BR");
+ if(pt) voice.voice=pt;
+
+ voice.onstart=()=>{
+  busy=true;
+  document.getElementById("avatar").classList.add("talking");
+  document.getElementById("status").textContent="● Falando...";
+ };
+
+ voice.onend=()=>{
+  busy=false;
+  document.getElementById("avatar").classList.remove("talking");
+  document.getElementById("status").textContent=
+  active?"● Pronto para conversar":"● Pausado";
+ };
+
+ speechSynthesis.speak(voice);
+}
+
+function startLive(){
+ active=true;
+ document.getElementById("status").textContent="● Demonstração iniciada";
+ speak("Olá, pessoal! Sejam bem-vindos à nossa live!");
+}
+
+function stopLive(){
+ active=false;
+ speechSynthesis.cancel();
+ busy=false;
+ document.getElementById("avatar").classList.remove("talking");
+ document.getElementById("status").textContent="● Pausado";
+}
+
+function testVoice(){
+ speak("Olá! Estou pronto para conversar com vocês!");
+}
+
+function sendMessage(){
+ const name=document.getElementById("username").value.trim()||"Visitante";
+ const msg=document.getElementById("comment").value.trim();
+
+ if(!msg)return;
+
+ const answer=response(name,msg);
+
+ const box=document.createElement("div");
+ box.className="message";
+
+ const person=document.createElement("div");
+ person.className="name";
+ person.textContent=name;
+
+ const comment=document.createElement("div");
+ comment.textContent=msg;
+
+ const reply=document.createElement("div");
+ reply.className="answer";
+ reply.textContent=characters[document.getElementById("character").value].name+": "+answer;
+
+ box.append(person,comment,reply);
+ document.getElementById("messages").append(box);
+
+ document.getElementById("comment").value="";
+ box.scrollIntoView({behavior:"smooth",block:"nearest"});
+
+ if(active && !busy)speak(answer);
+}
+</script>
+</body>
+</html>
