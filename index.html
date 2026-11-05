@@ -8,54 +8,25 @@
 
 <style>
 *{box-sizing:border-box}
-body{
- margin:0;padding:16px;
- background:#100e19;color:#fff;
- font-family:Arial,sans-serif;
-}
+body{margin:0;padding:16px;background:#100e19;color:#fff;font-family:Arial,sans-serif}
 header{text-align:center;padding:18px 5px}
 .logo{font-size:28px;font-weight:900;color:#bd91ff}
 .sub{font-size:12px;color:#aaa;margin-top:7px}
-.card{
- background:#1b1827;
- border:1px solid #383148;
- border-radius:18px;
- padding:17px;margin:14px 0;
-}
+.card{background:#1b1827;border:1px solid #383148;border-radius:18px;padding:17px;margin:14px 0}
 h2{font-size:17px;margin:0 0 15px}
 button,input,select{font:inherit;border-radius:10px}
-button{
- border:0;padding:12px 15px;
- background:#9659e9;color:white;
- font-weight:bold;cursor:pointer;margin:4px;
-}
+button{border:0;padding:12px 15px;background:#9659e9;color:white;font-weight:bold;cursor:pointer;margin:4px}
 button.secondary{background:#393347}
-input,select{
- width:100%;padding:13px;margin:7px 0;
- background:#11101a;color:white;
- border:1px solid #494256;
-}
+button:disabled{opacity:.5;cursor:wait}
+input,select{width:100%;padding:13px;margin:7px 0;background:#11101a;color:white;border:1px solid #494256}
 label{font-size:13px;color:#c9c5d2}
 small{color:#aaa}
 .center{text-align:center}
-.tag{
- display:inline-block;padding:7px 12px;
- border-radius:20px;background:#30263f;
- color:#d8baff;font-size:11px;
-}
+.tag{display:inline-block;padding:7px 12px;border-radius:20px;background:#30263f;color:#d8baff;font-size:11px}
 .status{font-size:13px;color:#9ee6bd}
-.controls{
- display:flex;flex-wrap:wrap;
- justify-content:center;gap:5px;
-}
-.penguin-stage{
- display:flex;justify-content:center;
- align-items:center;padding:12px 0;
-}
-.penguin{
- width:245px;max-width:85%;
- filter:drop-shadow(0 12px 12px #0008);
-}
+.controls{display:flex;flex-wrap:wrap;justify-content:center;gap:5px}
+.penguin-stage{display:flex;justify-content:center;align-items:center;padding:12px 0}
+.penguin{width:245px;max-width:85%;filter:drop-shadow(0 12px 12px #0008)}
 .body-shape{fill:#25283a;stroke:#11121c;stroke-width:5}
 .belly{fill:#f8f4ed;stroke:#ded9d2;stroke-width:2}
 .wing{fill:#34384d;stroke:#171925;stroke-width:4}
@@ -65,46 +36,34 @@ small{color:#aaa}
 .eye-white{fill:white}
 .pupil{fill:#171722}
 .cheek{fill:#f4a5a5;opacity:.65}
-.eyes{animation:blink 5s infinite}
-.penguin.talking .beak{animation:beak .18s infinite alternate}
-.penguin.talking .wing-left{
- animation:wave .4s infinite alternate;
- transform-origin:150px 290px;
-}
-.penguin.talking .wing-right{
- animation:wave .4s infinite alternate-reverse;
- transform-origin:290px 290px;
-}
-.penguin.happy .body-shape{fill:#303b4d}
-.penguin.surprised .eye-white{
- transform:scale(1.15);
- transform-box:fill-box;transform-origin:center;
-}
-.penguin.confused .cap{
- transform:rotate(-5deg);
- transform-origin:220px 115px;
-}
-@keyframes beak{to{transform:scaleY(.7) translateY(3px)}}
-@keyframes wave{to{transform:rotate(12deg)}}
+
+/* Piscar sem mover os olhos: apenas aparece a pálpebra */
+.eyelids{opacity:0;animation:blink 5.5s infinite}
 @keyframes blink{
- 0%,46%,50%,100%{transform:scaleY(1)}
- 48%{transform:scaleY(.08)}
+ 0%,43%,47%,79%,83%,100%{opacity:0}
+ 45%,81%{opacity:1}
 }
-.stats{
- display:grid;grid-template-columns:1fr 1fr;gap:10px;
-}
-.stat{
- background:#292538;border-radius:12px;
- padding:13px;text-align:center;
-}
+
+/* Boca fechada e boca aberta ocupam exatamente o mesmo lugar */
+.beak-open{opacity:0}
+.penguin.talking .beak-closed{opacity:0}
+.penguin.talking .beak-open{opacity:1}
+.penguin.talking .wing-left{animation:wave .5s infinite alternate}
+.penguin.talking .wing-right{animation:wave .5s infinite alternate-reverse}
+.wing-left{transform-origin:150px 290px}
+.wing-right{transform-origin:290px 290px}
+@keyframes wave{to{transform:rotate(8deg)}}
+
+.penguin.happy .body-shape{fill:#303b4d}
+.penguin.surprised .eye-white{opacity:1}
+.penguin.confused .cap{transform:rotate(-5deg);transform-origin:220px 115px}
+
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.stat{background:#292538;border-radius:12px;padding:13px;text-align:center}
 .stat strong{display:block;font-size:23px}
 .stat span{font-size:11px;color:#aaa}
 #messages{max-height:280px;overflow:auto}
-.message{
- background:#292538;padding:12px;
- border-radius:12px;margin:9px 0;
- overflow-wrap:anywhere;
-}
+.message{background:#292538;padding:12px;border-radius:12px;margin:9px 0;overflow-wrap:anywhere}
 .name{color:#c39aff;font-weight:bold}
 .answer{color:#9ee6bd;margin-top:7px}
 .reactions{display:flex;flex-wrap:wrap;gap:5px}
@@ -117,49 +76,30 @@ small{color:#aaa}
 <header>
  <div class="logo">✦ LIVE ANIMATION</div>
  <div class="sub">SEU PERSONAGEM. SUA LIVE. SUA DIVERSÃO.</div>
- <div style="margin-top:12px">
-  <span class="tag">MODO DEMONSTRAÇÃO</span>
- </div>
+ <div style="margin-top:12px"><span class="tag">MODO DEMONSTRAÇÃO</span></div>
 </header>
 
 <div class="card center">
  <h2>🐧 Apresentador oficial</h2>
-
  <div class="penguin-stage">
-  <svg id="penguin" class="penguin"
-       viewBox="0 0 440 440"
-       role="img" aria-label="Pingo, o pinguim">
-
+  <svg id="penguin" class="penguin" viewBox="0 0 440 440" role="img" aria-label="Pingo, o pinguim">
    <ellipse cx="220" cy="410" rx="112" ry="16" fill="#0005"/>
 
-   <!-- Pés -->
    <path class="feet" d="M155 367 Q125 380 113 397 Q145 408 190 396 L202 382Z"/>
    <path class="feet" d="M238 382 L250 397 Q295 408 327 397 Q310 378 278 367Z"/>
 
-   <!-- Asas -->
    <path class="wing wing-left" d="M145 225 Q95 222 83 277 Q76 319 130 337 L166 292Z"/>
    <path class="wing wing-right" d="M295 225 Q345 222 357 277 Q364 319 310 337 L274 292Z"/>
 
-   <!-- Corpo -->
-   <path class="body-shape"
-    d="M220 91 C129 91 105 175 110 280
-       C113 359 151 392 220 392
-       C289 392 327 359 330 280
-       C335 175 311 91 220 91Z"/>
+   <path class="body-shape" d="M220 91 C129 91 105 175 110 280 C113 359 151 392 220 392 C289 392 327 359 330 280 C335 175 311 91 220 91Z"/>
 
-   <!-- Barriga -->
-   <path class="belly"
-    d="M220 191 C160 191 142 252 153 322
-       C160 367 184 378 220 378
-       C256 378 280 367 287 322
-       C298 252 280 191 220 191Z"/>
+   <path class="belly" d="M220 191 C160 191 142 252 153 322 C160 367 184 378 220 378 C256 378 280 367 287 322 C298 252 280 191 220 191Z"/>
 
-   <!-- Bochechas -->
    <ellipse class="cheek" cx="157" cy="222" rx="13" ry="8"/>
    <ellipse class="cheek" cx="283" cy="222" rx="13" ry="8"/>
 
-   <!-- Olhos -->
-   <g class="eyes">
+   <!-- Olhos fixos -->
+   <g>
     <ellipse class="eye-white" cx="183" cy="190" rx="18" ry="23"/>
     <ellipse class="eye-white" cx="257" cy="190" rx="18" ry="23"/>
     <circle class="pupil" cx="188" cy="194" r="9"/>
@@ -168,34 +108,33 @@ small{color:#aaa}
     <circle cx="265" cy="190" r="3" fill="white"/>
    </g>
 
-   <!-- Bico -->
-   <path class="beak"
-    d="M190 218 Q220 202 250 218
-       Q240 247 220 251 Q200 247 190 218Z"/>
+   <!-- Pálpebras: não deslocam os olhos -->
+   <g class="eyelids" fill="none" stroke="#25283a" stroke-width="11" stroke-linecap="round">
+    <path d="M166 190 Q183 199 200 190"/>
+    <path d="M240 190 Q257 199 274 190"/>
+   </g>
 
-   <!-- Boné -->
-   <path class="cap"
-    d="M143 119 Q153 54 220 55
-       Q287 54 297 119
-       Q226 101 143 119Z"/>
-   <path class="cap"
-    d="M142 117 Q217 98 304 121
-       Q320 128 307 138
-       Q222 125 143 137 Q128 132 142 117Z"/>
-   <path class="cap-detail"
-    d="M196 75 Q220 65 244 75 Q220 89 196 75Z"/>
+   <!-- Bico fechado -->
+   <path class="beak beak-closed" d="M190 218 Q220 202 250 218 Q240 247 220 251 Q200 247 190 218Z"/>
 
-   <!-- Detalhe da roupa -->
-   <path d="M175 337 Q220 353 265 337"
-    fill="none" stroke="#8c5be8" stroke-width="8"
-    stroke-linecap="round"/>
+   <!-- Bico aberto: interior escuro e duas partes laranjas -->
+   <g class="beak-open">
+    <path d="M190 218 Q220 202 250 218 Q242 251 220 255 Q198 251 190 218Z" fill="#54251f" stroke="#d96e27" stroke-width="3"/>
+    <path d="M190 218 Q220 202 250 218 Q242 231 220 234 Q198 231 190 218Z" fill="#ff9d42" stroke="#d96e27" stroke-width="2"/>
+    <path d="M198 239 Q220 250 242 239 Q236 255 220 258 Q204 255 198 239Z" fill="#ff9d42" stroke="#d96e27" stroke-width="2"/>
+   </g>
+
+   <path class="cap" d="M143 119 Q153 54 220 55 Q287 54 297 119 Q226 101 143 119Z"/>
+   <path class="cap" d="M142 117 Q217 98 304 121 Q320 128 307 138 Q222 125 143 137 Q128 132 142 117Z"/>
+   <path class="cap-detail" d="M196 75 Q220 65 244 75 Q220 89 196 75Z"/>
+
+   <path d="M175 337 Q220 353 265 337" fill="none" stroke="#8c5be8" stroke-width="8" stroke-linecap="round"/>
    <circle cx="220" cy="348" r="7" fill="#d4b8ff"/>
   </svg>
  </div>
 
  <h2 style="margin-bottom:5px">PINGO</h2>
  <div class="status" id="status">● Pronto para conversar</div>
-
  <div class="controls" style="margin-top:14px">
   <button onclick="startLive()">▶ INICIAR TESTE</button>
   <button class="secondary" onclick="stopLive()">Ⅱ PAUSAR</button>
@@ -206,31 +145,20 @@ small{color:#aaa}
 <div class="card">
  <h2>📊 Painel da demonstração</h2>
  <div class="stats">
-  <div class="stat">
-   <strong id="viewers">12</strong>
-   <span>ESPECTADORES FICTÍCIOS</span>
-  </div>
-  <div class="stat">
-   <strong id="commentCount">0</strong>
-   <span>COMENTÁRIOS DE TESTE</span>
-  </div>
+  <div class="stat"><strong id="viewers">12</strong><span>ESPECTADORES FICTÍCIOS</span></div>
+  <div class="stat"><strong id="commentCount">0</strong><span>COMENTÁRIOS DE TESTE</span></div>
  </div>
 </div>
 
 <div class="card">
  <h2>💬 Chat de demonstração</h2>
  <div id="messages">
-  <div class="message">
-   <div class="name">Sistema</div>
-   Bem-vindo ao teste do Pingo!
-  </div>
+  <div class="message"><div class="name">Sistema</div>Bem-vindo ao teste do Pingo!</div>
  </div>
-
  <input id="username" placeholder="Nome da pessoa">
  <input id="comment" placeholder="Digite um comentário">
-
  <div class="controls">
-  <button onclick="sendMessage()">ENVIAR COMENTÁRIO</button>
+  <button id="sendButton" onclick="sendMessage()">ENVIAR COMENTÁRIO</button>
   <button class="secondary" onclick="sampleComment()">COMENTÁRIO ALEATÓRIO</button>
  </div>
 </div>
@@ -264,31 +192,26 @@ small{color:#aaa}
 
 <div class="card">
  <h2>⚙️ Configurações de voz</h2>
-
  <label>Velocidade da voz</label>
- <input type="range" id="speed"
-        min="0.7" max="1.4" step="0.1" value="1">
-
+ <input type="range" id="speed" min="0.7" max="1.4" step="0.1" value="1">
  <label>Tom da voz</label>
- <input type="range" id="pitch"
-        min="0.7" max="1.5" step="0.1" value="1.1">
-
+ <input type="range" id="pitch" min="0.7" max="1.5" step="0.1" value="1.1">
  <label>Voz disponível no aparelho</label>
- <select id="voiceChoice">
-  <option value="">Voz padrão em português</option>
- </select>
+ <select id="voiceChoice"><option value="">Voz padrão em português</option></select>
  <small>As opções dependem das vozes instaladas no navegador.</small>
 </div>
 
-<div class="footer">
- LIVE ANIMATION • PROJETO EM TESTE
-</div>
+<div class="footer">LIVE ANIMATION • PROJETO EM TESTE</div>
 
 <script>
 let active=false;
 let count=0;
+let conversationHistory=[];
 
 const penguin=document.getElementById("penguin");
+
+/* Endereço do servidor de IA */
+const AI_SERVER="https://pingo-ai-server.arthurmatosdasilva838.workers.dev/";
 
 function setStatus(text){
  document.getElementById("status").textContent="● "+text;
@@ -348,7 +271,7 @@ function speak(text){
 
  voice.onend=()=>{
   penguin.classList.remove("talking");
-  setStatus(active?"Teste em andamento":"Pronto para conversar");
+  setStatus(active?"Demonstração iniciada":"Pronto para conversar");
  };
 
  voice.onerror=()=>{
@@ -383,39 +306,6 @@ function testVoice(){
  speak("E aí, pessoal! Tudo tranquilo? Eu sou o Pingo!");
 }
 
-function response(name,msg){
- const m=msg.toLowerCase();
-
- if(/tudo bem|como vai|como tá|tudo bom/.test(m))
-  return "Tudo ótimo, "+name+"! E por aí?";
-
- if(/idade|quantos anos/.test(m))
-  return "Idade? Sou um pinguim virtual, meu parceiro!";
-
- if(/qual seu nome|quem é você/.test(m))
-  return "Eu sou o Pingo! Prazer, "+name+"!";
-
- if(/salve|oi|olá|eae|e aí/.test(m))
-  return "Opa, "+name+"! Seja muito bem-vindo!";
-
- if(/piada/.test(m))
-  return "Quer uma piada? O que o peixe disse quando bateu na parede? Nada!";
-
- if(/obrigado|obrigada|valeu/.test(m))
-  return "Tamo junto, "+name+"!";
-
- if(/tchau|vou sair/.test(m))
-  return "Até mais, "+name+"! Volta sempre!";
-
- if(/jogo|jogar/.test(m))
-  return "Qual jogo você curte, "+name+"?";
-
- if(/pingo/.test(m))
-  return "Chamou? O Pingo chegou!";
-
- return "Opa, "+name+"! Vi seu comentário! Conta mais aí!";
-}
-
 function addMessage(name,msg,answer){
  const box=document.createElement("div");
  box.className="message";
@@ -437,36 +327,88 @@ function addMessage(name,msg,answer){
  count++;
  document.getElementById("commentCount").textContent=count;
  box.scrollIntoView({behavior:"smooth",block:"nearest"});
+ return reply;
 }
 
-function sendMessage(){
+/* Envia o comentário para a inteligência artificial */
+async function askPingo(name,msg){
+ conversationHistory.push({
+  role:"user",
+  content:"A pessoa chamada "+name+" comentou: "+msg
+ });
+
+ conversationHistory=conversationHistory.slice(-16);
+
+ try{
+  const result=await fetch(AI_SERVER,{
+   method:"POST",
+   headers:{"Content-Type":"application/json"},
+   body:JSON.stringify({messages:conversationHistory})
+  });
+
+  if(!result.ok){
+   throw new Error("Servidor respondeu com erro HTTP "+result.status);
+  }
+
+  const data=await result.json();
+
+  if(!data.response || typeof data.response!=="string"){
+   throw new Error(data.error||"O servidor não retornou uma resposta válida.");
+  }
+
+  conversationHistory.push({
+   role:"assistant",
+   content:data.response
+  });
+
+  conversationHistory=conversationHistory.slice(-16);
+  return data.response;
+
+ }catch(error){
+  console.error("Erro na IA do Pingo:",error);
+  return "Eita, "+name+"! Minha conexão com o cérebro deu uma falhada. Tenta falar comigo de novo daqui a pouquinho!";
+ }
+}
+
+async function sendMessage(){
  const name=document.getElementById("username").value.trim()||"Visitante";
- const msg=document.getElementById("comment").value.trim();
+ const input=document.getElementById("comment");
+ const msg=input.value.trim();
+ const button=document.getElementById("sendButton");
 
  if(!msg)return;
 
- const answer=response(name,msg);
- addMessage(name,msg,answer);
+ input.value="";
+ button.disabled=true;
 
- document.getElementById("comment").value="";
+ const reply=addMessage(name,msg,"Pensando numa resposta...");
  react("happy");
+ setStatus("Pingo está pensando");
+
+ const answer=await askPingo(name,msg);
+ reply.textContent="🐧 Pingo: "+answer;
+
+ button.disabled=false;
+ setStatus(active?"Demonstração iniciada":"Pronto para conversar");
 
  if(active)speak(answer);
 }
 
-function sampleComment(){
+async function sampleComment(){
  const samples=[
   ["Lucas","Salve, Pingo!"],
   ["Maria","Conta uma piada!"],
   ["Pedro","Tudo bem?"],
   ["Ana","Você é muito engraçado!"],
-  ["Rafa","Qual seu nome?"]
+  ["Rafa","Qual seu nome?"],
+  ["João","Qual seu time de futebol?"],
+  ["Bia","Qual música você gosta?"]
  ];
 
  const item=samples[Math.floor(Math.random()*samples.length)];
- const answer=response(item[0],item[1]);
-
- addMessage(item[0],item[1],answer);
+ const reply=addMessage(item[0],item[1],"Pensando...");
+ const answer=await askPingo(item[0],item[1]);
+ reply.textContent="🐧 Pingo: "+answer;
  if(active)speak(answer);
 }
 
@@ -476,12 +418,6 @@ function sendGift(gift){
  react("surprised");
  if(active)speak(message);
 }
-
 </script>
 </body>
- </html>
-
-
-
-
- 
+</html>
